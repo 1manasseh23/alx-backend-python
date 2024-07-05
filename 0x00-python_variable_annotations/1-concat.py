@@ -9,4 +9,4 @@ a concatenated string
 def concat(str1: str, str2: str) -> str:
     """Return string"""
 
-    return str1, str2
+    return str1 + str2
