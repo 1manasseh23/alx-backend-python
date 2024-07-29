@@ -5,8 +5,9 @@ The unit test for utils.access_nested_map
 import unittest
 from parameterized import parameterized
 from utils import access_nested_map  # Adjust the import as necessary
-from unittest.mock import patch, Mock
+from unittest.mock import patch, Mock, MagicMock
 from utils import get_json  # Adjust the import as necessary
+from utils import memoize
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -59,6 +60,36 @@ class TestGetJson(unittest.TestCase):
 
             # Reset the mock for the next iteration
             mock_get.reset_mock()
+
+
+class TestMemoize(unittest.TestCase):
+
+    def test_memoize(self):
+
+        # Define TestClass with the method and memoized property
+        class TestClass:
+            def a_method(self):
+                return 42
+
+            @memoize
+            def a_property(self):
+                return self.a_method()
+
+        # Use patch directly on the class definition
+        with patch.object(TestClass, 'a_method', return_value=42) \
+                as mock_a_method:
+            obj = TestClass()
+
+            # Access the memoized property twice
+            result1 = obj.a_property
+            result2 = obj.a_property
+
+            # Verify that the result is correct
+            self.assertEqual(result1, 42)
+            self.assertEqual(result2, 42)
+
+            # Verify that a_method was called only once
+            mock_a_method.assert_called_once()
 
 
 if __name__ == "__main__":
