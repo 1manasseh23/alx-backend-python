@@ -35,6 +35,7 @@ class TestGetJson(unittest.TestCase):
     @patch('requests.get')
     def test_get_json(self, mock_get):
         # Define test cases
+
         test_cases = [
             ("http://example.com", {"payload": True}),
             ("http://holberton.io", {"payload": False}),
@@ -42,6 +43,7 @@ class TestGetJson(unittest.TestCase):
 
         for test_url, test_payload in test_cases:
             # Set up the mock response
+
             mock_response = Mock()
             mock_response.json.return_value = test_payload
             mock_get.return_value = mock_response
